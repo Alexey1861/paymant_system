@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <h1>{{ invoice.description }}</h1>
+    <p>Сумма: {{ invoice.amount }}</p>
+    <p>Дата создания счёта: {{ invoice.creation_date }}</p>
+
+    {% if invoice.amount > 0 %}
+        <form method="POST">
+            {% csrf_token %}
+
+            {{ form.payment_sum }}
+            <button type="submit">Оплатить</button>
+        </form>
+    {% else %}
+        <p>Счёт оплачен: {{ invoice.full_payment_date }}</p>
+    {% endif %}
+
+    <a href="{% url 'index' %}">На главную</a>
+
+    <h2>Платежи</h2>
+    {% if all_payments %}
+        {% for payment in all_payments %}
+            <p>Платёж на сумму: {{ payment.amount }} на {{ payment.payment_date }}</p>
+        {% endfor %}
+    {% else %}
+        <p>Платежи отсутсвуют</p>
+    {% endif %}
+</body>
+</html>
